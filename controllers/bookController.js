@@ -34,14 +34,17 @@ exports.index = (req, res) => {
     );
 };
 
-
-// exports.index = (req, res) => {
-//     res.send("Not implemented: Site home page");
-// };
-
 // Display list of all Books
-exports.book_list = (req, res) => {
-    res.send("Not implemented: Book list");
+exports.book_list = (req, res, next) => {
+    Book.find({}, "title author")
+        .sort({title: 1})
+        .populate("author")
+        .exec((err, list_books) => {
+            if (err) {
+                return next(err);
+            }
+            res.render("book_list", {title: "Book List", book_list: list_books});
+        });
 };
 
 // Display detail page for Book
