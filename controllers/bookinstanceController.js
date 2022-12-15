@@ -36,6 +36,6 @@ exports.bookinstance_update_get = (req, res) => {
 };
 
 // Handle BookInstance update on POST
-exports.bookInstance_update_post = (req, res) => {
+exports.bookinstance_update_post = (req, res) => {
     res.send("Not implemented: BookInstance update POST");
 };
