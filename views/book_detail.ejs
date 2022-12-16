@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport", content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2">
+          <ul class="sidebar-nav">
+            <li><a href="/catalog">Home</a></li>
+            <li><a href="/catalog/books">All Books</a></li>
+            <li><a href="/catalog/authors">All Authors</a></li>
+            <li><a href="/catalog/genres">All Genres</a></li>
+            <li><a href="/catalog/bookinstances">All Book Instances</a></li>
+            <li><hr></li>
+            <li><a href="catalog/author/create">Create new author</a></li>
+            <li><a href="catalog/create/create">Create new genre</a></li>
+            <li><a href="catalog/book/create">Create new book</a></li>
+            <li><a href="catalog/bookinstance/create">Create new book instance (copy)</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-10">
+            <h1>Title: <%= book.title %></h1>
+            <p>
+                <strong>Author: </strong>
+                <a href="<%= book.author.url %>"><%= book.author.name %></a>
+            </p>
+            <p><strong>Summary: </strong><%= book.summary %></p>
+            <p><strong>ISBN: </strong><%= book.isbn %></p>
+            <p>
+                <strong>Genre: </strong>
+                <% book.genre.forEach((val, index) => { %>
+                    <a href=<%= val.url %>><%= val.name %></a>
+                <% }) %> 
+            </p>
+            <div style="margin-left:20px;margin-top:20px">
+                <h4>Copies</h4>
+                <% if (book_instances.length) {%>
+                    <% book_instances.forEach((val) => { %>
+                        <hr>
+                        <% if (val.status == "Available") { %>
+                            <p class="text-success"><%= val.status %></p>
+                        <% } else if (val.status == "Maintenance") { %>
+                            <p class="text-danger"><%= val.status %></p>
+                        <% } else { %>
+                            <p class="text-warning"><%= val.status %></p>
+                        <% } %>
+                        <p><strong>Imprint: </strong><%= val.imprint %></p>
+                        <% if (val.status != "Available") { %>
+                            <p><strong>Due back: </strong><%= val.due_back %></p>
+                        <% } %>
+                        <p>
+                            <strong>ID: </strong>
+                            <a href="<%= val.url %>">
+                                <%= val._id %>
+                            </a>
+                        </p>
+                    <% }) %>
+                <% } else {%>
+                    <p>There are no copies of this book.</p>
+                <% } %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
