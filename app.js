@@ -29,9 +29,27 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const catalogRouter = require("./routes/catalog"); // Import routes for "catalog" area of site
+const compression = require("compression");
+const helmet = require("helmet");
+
+// Create the Express application object
+const app = express();
+
+// …
+
+app.use(compression()); // Compress all routes
+
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(helmet());
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
